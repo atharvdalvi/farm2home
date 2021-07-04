@@ -1,0 +1,43 @@
+<!DOCTYPE html><html>
+<meta name="viewport" content="width=device-width">
+<head><title>RazorPay Web Payment</title></head>
+<body style="background-color:white;">
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+
+       var options = {
+         "key": "rzp_test_9L9pcukBmi6mHh",
+          "amount": localStorage.getItem("local"), 
+          "currency": "INR",
+          "name": "Farm2Home",
+          "description": "Test Transaction",
+          "image": "https://example.com/your_logo",
+          "handler": function (response){
+             window.parent.postMessage("SUCCESS","*");      //2 
+             alert(response.razorpay_payment_id);
+             alert(response.razorpay_order_id);
+             alert(response.razorpay_signature)    
+          },    
+  
+           "notes": {        
+             "address": "Autofy"    
+          },    
+          "theme": {
+             "color": "#a8ff78"    
+          },
+          "modal": {
+            "ondismiss": function(){
+               window.parent.postMessage("MODAL_CLOSED","*");   //3
+            }
+          }
+       };
+
+       var rzp1 = new Razorpay(options);
+       window.onload = function(e){  //1  
+          rzp1.open();
+          e.preventDefault();
+       }
+
+     </script>
+</body>
+</html>
